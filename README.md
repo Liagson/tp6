@@ -2,7 +2,7 @@ Trabajo tp6 - Arquitectura de sistemas
 =======
 Compilación
 -----------
-'gcc lpthread main.c funciones.c -o main'
+$>gcc -lpthread main.c funciones.c -o main
 
 Descripción
 -----------
