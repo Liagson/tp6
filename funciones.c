@@ -1,7 +1,10 @@
 /* los includes que necesiteis */
 #include <pthread.h> /* Necesario para el multithreading */
 #include <fcntl.h>   /* Necesario para el O_RDONLY, O_CREAT... */
-#include <stdlib.h> /* Necesario para el calloc */
+#include <stdlib.h> /* Necesario para el malloc */
+
+#define SIZE_OF_INT 4 //Valido para punteros
+#define SIZE_OF_FLOAT 4 
 
 /* las variables que necesiteis */
 float** M; //Esta es la matriz donde se colocan los valores del fichero
@@ -17,8 +20,8 @@ float** crear_matriz(int filas, int columnas){
 	//Se devuelve una matriz con el espacio demandado
 	
 	int i = 0; 	
-	float **matriz = malloc(filas * sizeof(float *));
-	for(; i < filas; i++) matriz[i] = malloc(columnas * sizeof(float));
+	float **matriz = malloc(filas * SIZE_OF_FLOAT);
+	for(; i < filas; i++) matriz[i] = malloc(columnas * SIZE_OF_FLOAT);
 		
 	return matriz;	
 }
@@ -74,14 +77,14 @@ int lectura_y_creacion(char *f_in, char *f_out, int *filas, int *columnas){
 	arch_lectura = open(f_in, O_RDONLY);
 	if (arch_lectura == -1) return arch_lectura;
 	
-	error = read(arch_lectura, &parametros, sizeof(int) * 2);
+	error = read(arch_lectura, &parametros, SIZE_OF_INT * 2);
 	if (error == -1) return error;
 	
 	*filas = parametros[0];
 	*columnas = parametros[1]; 
-	buf_num = malloc(parametros[0] * parametros[1] * sizeof(float));
+	buf_num = malloc(parametros[0] * parametros[1] * SIZE_OF_FLOAT);
 	
-	read(arch_lectura, buf_num, sizeof(float) * parametros[0] * parametros[1]);
+	read(arch_lectura, buf_num, SIZE_OF_FLOAT * parametros[0] * parametros[1]);
 	close(arch_lectura);
 	
 	R = crear_matriz(*filas, *columnas); //Reservo el espacio necesario para R
@@ -103,6 +106,8 @@ int lectura_y_creacion(char *f_in, char *f_out, int *filas, int *columnas){
 		j = 0;
 	}
 	
+	for(i = 0; i < filas_M; i++) free(M[i]);
+	free(M);
 	free(buf_num);
 }
 	
@@ -110,13 +115,13 @@ void calculo_filtro(int numero_threads){
 	/* para la matriz de entrada calcula la convolucion utilizando tantos threads como los indicados en numero_threads */
 		
 	pthread_t* thread;
-	thread = calloc(numero_threads, sizeof(pthread_t*));
+	thread = malloc(numero_threads * sizeof(pthread_t*));
 	
 	int i = 0,  posicion, anchura;	
 
 	int** parametros; /*Aqui vendran los parametros de entrada para la convolucion */
-	parametros = calloc(numero_threads, sizeof(int*));
-	for(;i < numero_threads; i++) parametros[i] = calloc(4, sizeof(int));
+	parametros = malloc(numero_threads * SIZE_OF_INT);
+	for(;i < numero_threads; i++) parametros[i] = malloc(4 * SIZE_OF_INT);
 	
 	anchura = columnas / numero_threads;
 	for (i = 0; i < numero_threads - 1; i++){
@@ -137,6 +142,10 @@ void calculo_filtro(int numero_threads){
 	
 	pthread_create(&thread[i], NULL, convolucion, parametros[i]);
 	for(i = 0; i < numero_threads; i++) pthread_join(thread[i], NULL);
+
+	free(thread);
+	for(i = 0; i < numero_threads; i++) free(parametros[i]);
+	free(parametros);
 	
 }
 
@@ -147,7 +156,7 @@ void escribir_resultado(char *f_out){
 	int fichero;
 	int i = 0, j = 0, contador = 0;
 	int parametros[] = {filas, columnas};
-	float* num = calloc(filas * columnas, sizeof(float));
+	float* num = malloc(filas * columnas * SIZE_OF_FLOAT);
 		
 	for(; i < filas; i++){
 		for(; j < columnas; j++){
@@ -158,6 +167,9 @@ void escribir_resultado(char *f_out){
 	}
 		
 	fichero = creat(f_out, 0666);
-	write(fichero, parametros, sizeof(int) * 2);		
-	write(fichero, num, sizeof(float) * filas * columnas);	
+	write(fichero, parametros, SIZE_OF_INT * 2);		
+	write(fichero, num, SIZE_OF_FLOAT * filas * columnas);
+
+	free(num);
+	close(fichero);
 }
