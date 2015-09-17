@@ -3,18 +3,22 @@ Trabajo tp6 - Arquitectura de sistemas
 Compilación
 -----------
 `gcc -lpthread main.c funciones.c -o main`
-
+Ejecución
+-----------
+`./main (numero de threads) (fichero lectura) (fichero salida)`
 Descripción
 -----------
 El problema consiste en calcular el producto de convolución para cada uno de los elementos de una matriz de 2 dimensiones. Para cada elemento la convolucion tendrá en cuenta el propio elementos de la matriz y los 8 elementos adyacentes en de la misma fila y columna. El cálculo para cada elemento de la matriz (**R**) será el siguiente:
 
-`float K[5]={1.0f, 4.0f , 6.0f, 4.0f, 1.0f};`
+```C
+float K[5]={1.0f, 4.0f , 6.0f, 4.0f, 1.0f};
 
-`float suma = 16.0f;`
+float suma = 16.0f;
 
-`R[i][j] = (M[i][j-2]*K[0]+M[i][j-1]*K[1]+M[i][j]*K[2]+M[i][j+1]*K[3]+M[i][j+2]*K[4])/suma;`
+R[i][j] = (M[i][j-2]*K[0]+M[i][j-1]*K[1]+M[i][j]*K[2]+M[i][j+1]*K[3]+M[i][j+2]*K[4])/suma;
 
-`R[i][j] += (M[i-2][j]*K[0]+M[i-1][j]*K[1]+M[i][j]*K[2]+M[i+1][j]*K[3]+M[i+2][j]*K[4])/suma;`
+R[i][j] += (M[i-2][j]*K[0]+M[i-1][j]*K[1]+M[i][j]*K[2]+M[i+1][j]*K[3]+M[i+2][j]*K[4])/suma;
+```
 
 En los contornos de la matriz, aquellos elementos que esta fuera de la misma valen 0.0f.
 
