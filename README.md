@@ -3,6 +3,8 @@ Trabajo tp6 - Arquitectura de sistemas
 Compilación
 -----------
 `gcc -lpthread main.c funciones.c -o main`
+* Hay versiones de gcc donde se debe escribir:  `gcc -pthread main.c funciones.c -o main`
+
 Ejecución
 -----------
 `./main (numero de threads) (fichero lectura) (fichero salida)`
