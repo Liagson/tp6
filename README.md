@@ -1,6 +1,5 @@
-Trabajo tp6 - Arquitectura de sistemas
-Desenfoque gaussiano
-=======
+#Trabajo tp6 - Arquitectura de sistemas
+#Desenfoque gaussiano
 Compilación
 -----------
 `gcc -lpthread main.c funciones.c -o main`
