@@ -1,4 +1,5 @@
 Trabajo tp6 - Arquitectura de sistemas
+Desenfoque gaussiano
 =======
 Compilación
 -----------
