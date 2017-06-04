@@ -1,5 +1,5 @@
-#Trabajo tp6 - Arquitectura de sistemas
-#Desenfoque gaussiano
+Trabajo tp6 - Arquitectura de sistemas (Desenfoque gaussiano)
+-----------
 Compilación
 -----------
 `gcc -lpthread main.c funciones.c -o main`
@@ -35,6 +35,6 @@ El fichero resultado correspondiente a la matriz R tiene el mismo formato que el
 
 Threads y rendimiento
 -----------
-Se realizó a través de este programa un estudio sobre el rendimiento del servidor de prácticas Hendrix de la Universidad de Zaragoza (Solaris) a la hora de ir incrementando el número de hilos empleados. Para ello empleé una matriz de 22MB y realicé la convulicón sobre ella con distinto número de threads. El estudio reveló que aunque el número óptimo de threads soportados por la máquina era de 30 hilos (siendo 32 el máximo) y tardando sólo 300ms, la mejora no era muy percetible pasados los 10 hilos.
+Se realizó a través de este programa un estudio sobre el rendimiento del servidor de prácticas Hendrix de la Universidad de Zaragoza (Solaris) a la hora de ir incrementando el número de hilos empleados. Para ello empleé una matriz de 22MB y realicé la convulicón sobre ella con distinto número de threads. La implementación de multithreading reveló una mejoría de un orden de magnitud en el tiempo de procesado de la convolución, llegando a los 300ms con 30 hilos. 
 
 ![Captura](http://i.imgur.com/iKLpqNA.png?1)
